@@ -1,0 +1,20 @@
+# optimize-image.toml
+# 画像最適化ツールの設定ファイル
+# ターゲットサイズのプロファイルを定義します。
+# 各エントリは "name" で識別され、--sizes オプションで選択できます。
+
+[[sizes]]
+# サムネイル（ギャラリー一覧表示用）
+name = "thumbnail"
+max_width = 500
+max_file_size_kb = 50
+initial_quality = 75
+output_dir = "output/thumbnails"
+
+[[sizes]]
+# 詳細画像（ライトボックス表示用）
+name = "detail"
+max_width = 1200
+max_file_size_kb = 800
+initial_quality = 80
+output_dir = "output/detail"

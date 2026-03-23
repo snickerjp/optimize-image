@@ -10,6 +10,35 @@
 - ファイルサイズ上限に収まるよう品質を自動調整
 - JSON 形式で結果を stdout に出力
 
+## アーキテクチャ
+
+```mermaid
+flowchart TD
+    classDef box fill:#ffffff,stroke:#333333,color:#000000
+    classDef io fill:#e0e0e0,stroke:#333333,color:#000000
+    classDef process fill:#f5f5f5,stroke:#333333,color:#000000
+
+    A["CLI 引数<br/>image-path / category<br/>--config / --sizes"]:::io
+    B["optimize-image.toml<br/>サイズプロファイル定義"]:::io
+    C["設定読み込み &amp; 引数パース"]:::process
+    D["画像読み込み<br/>JPEG EXIF 自動回転"]:::process
+    E{"サイズプロファイル<br/>ループ"}:::box
+    F["リサイズ<br/>Lanczos3 / 拡大なし"]:::process
+    G["WebP エンコード<br/>品質自動調整<br/>60%–initial_quality"]:::process
+    H["ファイル出力<br/>output_dir/category-uuid.webp"]:::process
+    I["JSON 結果を stdout に出力"]:::io
+
+    A --> C
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H -->|次のプロファイル| E
+    H -->|全プロファイル完了| I
+```
+
 ## 前提条件
 
 - Rust toolchain
